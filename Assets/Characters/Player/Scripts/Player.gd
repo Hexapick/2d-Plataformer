@@ -1,20 +1,15 @@
 extends KinematicBody2D
 
-# El principio de la refactorización consiste en cambiar el código sin cambiar el comportamiento para facilitar la lectura y por lo tanto la tarea de actualizar el software.
-
-const SPEED = 128
+const SPEED = 150
 const FLOOR = Vector2(0, -1)
-const GRAVITY = 16
-const JUMP_HEIGHT = 384
-const BOUNCING_JUMP = 112 # Esta constante es para definir la fuerza de rebote en la pared.
-
+const GRAVITY = 8
+const JUMP_HEIGHT = 600
+const BOUNCING_JUMP = 112 
 var motion : Vector2 = Vector2.ZERO
-var can_move : bool # Esta variable es para comprobar si el personaje puede moverse.
+var can_move : bool 
+var immunity : bool = false 
+var health : int = 5 
 
-var immunity : bool = false # Esto es para crear el estado de inmunidad en el player.
-var health : int = 5 # Con esta variable contabilizamos la salud del player.
-
-""" STATE MACHINE """
 var playback : AnimationNodeStateMachinePlayback
 
 
@@ -34,8 +29,8 @@ func _process(_delta):
 func motion_ctrl() -> void:
 	motion.y += GRAVITY
 	
-	if can_move: # Aquí se indica que solo podrá moverse si can_move es igual a true.
-		motion.x =  GLOBAL.get_axis().x * SPEED
+	if true: # Aquí se indica que solo podrá moverse si can_move es igual a true.
+		
 		
 		if GLOBAL.get_axis().x == 0:
 			playback.travel("Idle")
@@ -53,7 +48,6 @@ func motion_ctrl() -> void:
 			"Run":
 				get_node("Particles").emitting = true
 				
-	# Como he añadido los Raycast dentro de un position únicamente tenemos que cambiar la escala del nodo padre para invertir sus nodos hijos. Al ser un código más sencillo se puede prescindir de la función direction_ctrl() creada anteriormente.
 	match get_node("Sprite").flip_h:
 		true:
 			get_node("Raycast").scale.x = -1
